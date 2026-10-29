@@ -1,30 +1,15 @@
 
-LEETCODE PROBLEM- 403
+#LEETCODE PROBLEM- 322
 
 class Solution(object):
-    def canCross(self, stones):
-        stone_set = set(stones)
-        last = stones[-1]
-
-        memo = {}
-
-        def dfs(pos, jump):
-            if pos == last:
-                return True
-
-            if (pos, jump) in memo:
-                return memo[(pos, jump)]
-
-            for next_jump in [jump - 1, jump, jump + 1]:
-                if next_jump > 0 and pos + next_jump in stone_set:
-                    if dfs(pos + next_jump, next_jump):
-                        memo[(pos, jump)] = True
-                        return True
-
-            memo[(pos, jump)] = False
-            return False
-
-        if stones[1] != 1:
-            return False
-
-        return dfs(1, 1)
+    def coinChange(self, coins, amount):
+        dp = [float('inf')] * (amount + 1)
+        dp[0] = 0
+        
+        for i in range(1, amount + 1):
+            for coin in coins:
+                if i - coin >= 0:
+                    dp[i] = min(dp[i], dp[i - coin] + 1)
+        
+        return dp[amount] if dp[amount] != float('inf') else -1
+        
